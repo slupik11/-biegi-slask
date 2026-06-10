@@ -1,0 +1,35 @@
+// Zaprojektowane pod łatwe przejście na PostgreSQL: zmień provider + DATABASE_URL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Bieg {
+  id               Int      @id @default(autoincrement())
+  nazwa            String
+  data             DateTime
+  miasto           String
+  wojewodztwo      String   @default("śląskie")
+  dystanse         String   // JSON array jako string: '["5km","10km","21km"]'
+  typ              String   // uliczny | przełajowy | maraton | półmaraton | triathlon | inne
+  linkDoZapisow    String?
+  opis             String?
+  zrodlo           String   // maratonypolskie | dostartu | datasport | personalbest | formularz | niszowe
+  zewnetrznyId     String?  // do deduplikacji — id z platformy źródłowej
+  status           String   @default("do_akceptacji") // do_akceptacji | opublikowany | odrzucony
+  lat              Float?
+  lng              Float?
+  emailKontakt     String?  // tylko przy zgłoszeniu przez formularz
+  dataUtworzenia   DateTime @default(now())
+  dataAktualizacji DateTime @updatedAt
+
+  @@unique([zewnetrznyId, zrodlo])
+  @@index([status])
+  @@index([data])
+  @@index([miasto])
+}
