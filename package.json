@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "fetch-biegi": "tsx scripts/fetch-biegi.ts"
+    "fetch-biegi": "tsx scripts/fetch-biegi.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@playwright/browser-chromium": "^1.60.0",
