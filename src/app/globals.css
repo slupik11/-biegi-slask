@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
-/* Wyłączamy automatyczny dark mode — aplikacja nie obsługuje trybu ciemnego */
-:root {
+/*
+  Tailwind v4 Preflight ustawia color-scheme: light dark na html.
+  Wymuszamy tryb jasny — aplikacja nie obsługuje dark mode.
+*/
+html {
   color-scheme: light;
+  background-color: #f9fafb;
+}
+
+body {
+  background-color: #f9fafb;
+  color: #111827;
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BiegDTO } from "@/lib/types";
+import { StatZrodel } from "@/components/StatZrodel";
 
 const STYL_ZRODLA: Record<string, { badge: string; label: string }> = {
   maratonypolskie: { badge: "bg-blue-600 text-white",    label: "Maratony Polskie" },
@@ -61,14 +62,9 @@ export default function PanelAdmina() {
       <div className="flex items-start justify-between mb-6 gap-4 flex-wrap">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Panel admina</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Biegi oczekujące na akceptację
-            {biegi.length > 0 && (
-              <span className="ml-2 bg-orange-100 text-orange-700 font-semibold px-2 py-0.5 rounded-full text-xs">
-                {biegi.length}
-              </span>
-            )}
-          </p>
+          <div className="mt-2">
+            <StatZrodel tryb="oczekujace" />
+          </div>
         </div>
         <div className="flex gap-2">
           <button

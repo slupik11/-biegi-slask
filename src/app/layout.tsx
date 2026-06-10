@@ -26,9 +26,15 @@ export default function RootLayout({
             <Link href="/" className="font-bold text-xl text-orange-600 hover:text-orange-700">
               🏃 Biegi Śląsk
             </Link>
-            <nav className="flex gap-4 text-sm font-medium">
-              <Link href="/zglos-bieg" className="text-gray-600 hover:text-orange-600">
-                Zgłoś bieg
+            <nav className="flex gap-3 text-sm font-medium items-center">
+              <Link href="/jak-to-dziala" className="text-gray-500 hover:text-gray-900 hidden sm:inline">
+                Jak to działa?
+              </Link>
+              <Link
+                href="/zglos-bieg"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded-lg transition-colors"
+              >
+                + Zgłoś bieg
               </Link>
             </nav>
           </div>

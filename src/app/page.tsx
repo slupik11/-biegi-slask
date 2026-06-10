@@ -6,6 +6,7 @@ import { BiegDTO } from "@/lib/types";
 import { KafelekBiegu } from "@/components/KafelekBiegu";
 import { Filtry } from "@/components/Filtry";
 import { KalendarzBiegow } from "@/components/KalendarzBiegow";
+import { StatZrodel } from "@/components/StatZrodel";
 
 type Widok = "lista" | "kalendarz";
 
@@ -47,9 +48,9 @@ export default function StronaGlowna() {
           <h1 className="text-2xl font-bold text-gray-900 mb-1">
             Nadchodzące biegi na Śląsku
           </h1>
-          <p className="text-gray-500 text-sm">
-            Dane z Maratony Polskie, DoStartu, DataSport i Personal Best
-          </p>
+          <div className="mt-2">
+            <StatZrodel tryb="opublikowane" />
+          </div>
         </div>
 
         {/* Przełącznik Lista / Kalendarz */}
