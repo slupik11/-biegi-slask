@@ -74,7 +74,7 @@ export async function fetchDoStartu(): Promise<FetchedEvent[]> {
       const czySlaskApiTag = /\bSL\b/i.test(lokalizacjaPelna);
       if (!czySlaskApiTag && !czyBiegSlask(miasto, z.name)) continue;
 
-      const link = `${LINK_BASE}${z.permaLink.replace("/permalink", "")}`;
+      const link = `${LINK_BASE}${z.permaLink}`;
       const zewnetrznyId = `dostartu-${z.id}`;
 
       wyniki.push({

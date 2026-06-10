@@ -2,8 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { BiegDTO } from "@/lib/types";
+
+// Zdjęcie banera — biegacze na trasie (Unsplash, wolna licencja)
+const BANER_IMG = "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=900&q=75&fit=crop";
 
 const STYL_ZRODLA: Record<string, { badge: string; label: string }> = {
   maratonypolskie: { badge: "bg-blue-600 text-white",    label: "Maratony Polskie" },
@@ -69,6 +73,18 @@ export default function PodstronaBiegu() {
       </Link>
 
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        {/* Baner ze zdjęciem */}
+        <div className="relative h-44 bg-gray-200">
+          <Image
+            src={BANER_IMG}
+            alt="Biegacze na trasie"
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 672px) 100vw, 672px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+        </div>
+
         {/* Górny pasek */}
         <div className="bg-gray-50 border-b border-gray-200 px-6 py-3 flex items-center gap-3">
           <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${styl.badge}`}>
