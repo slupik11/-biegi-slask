@@ -13,3 +13,26 @@ body {
   background-color: #f9fafb;
   color: #111827;
 }
+
+/* ===== Animacje hero ===== */
+@keyframes runAcross {
+  0%   { transform: translateX(110vw); }
+  100% { transform: translateX(-180px); }
+}
+
+@keyframes runBob {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-7px) rotate(-1deg); }
+}
+
+@keyframes speedStreak {
+  0%   { transform: translateX(110vw); opacity: 0; }
+  4%   { opacity: 1; }
+  85%  { opacity: 0.7; }
+  100% { transform: translateX(-60vw); opacity: 0; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.25; transform: scaleX(1); }
+  50%       { opacity: 0.45; transform: scaleX(1.05); }
+}

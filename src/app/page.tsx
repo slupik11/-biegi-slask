@@ -2,18 +2,14 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { BiegDTO } from "@/lib/types";
 import { KafelekBiegu } from "@/components/KafelekBiegu";
 import { Filtry } from "@/components/Filtry";
 import { KalendarzBiegow } from "@/components/KalendarzBiegow";
 import { StatZrodel } from "@/components/StatZrodel";
+import { HeroBaner } from "@/components/HeroBaner";
 
 type Widok = "lista" | "kalendarz";
-
-// Zdjęcie z Unsplash — tłum biegaczy podczas wyścigu ulicznego (wolna licencja)
-const HERO_IMG =
-  "https://images.unsplash.com/photo-1664304828088-2879e58abf10?w=1400&q=85&fit=crop";
 
 export default function StronaGlowna() {
   const [biegi, setBiegi] = useState<BiegDTO[]>([]);
@@ -52,19 +48,8 @@ export default function StronaGlowna() {
     <div>
       {/* ===== HERO ===== */}
       {!maFiltry && (
-        <div className="relative overflow-hidden bg-gray-900" style={{ minHeight: 340 }}>
-          {/* Zdjęcie biegaczy w tle */}
-          <Image
-            src={HERO_IMG}
-            alt="Biegacze podczas wyścigu ulicznego"
-            fill
-            priority
-            className="object-cover object-center opacity-45"
-            sizes="100vw"
-          />
-          {/* Gradient — mocniejszy po lewej żeby tekst był czytelny */}
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-gray-900/65 to-gray-900/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 via-transparent to-transparent" />
+        <div className="relative overflow-hidden" style={{ minHeight: 340 }}>
+          <HeroBaner />
 
           {/* Treść hero */}
           <div className="relative max-w-5xl mx-auto px-4 py-12 sm:py-16 flex flex-col sm:flex-row sm:items-center gap-8 sm:gap-16">
