@@ -12,19 +12,21 @@ async function debug() {
 
   // Znajdź wiersz kalendarza — ma największą liczbę TDs
   let maxTd = 0;
-  let calendarTr: ReturnType<typeof $> | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let calendarTrEl: any = null;
   $("tr").each((_, tr) => {
     const count = $(tr).find("td").length;
     if (count > maxTd) {
       maxTd = count;
-      calendarTr = $(tr);
+      calendarTrEl = tr;
     }
   });
 
   console.log(`Wiersz kalendarza ma ${maxTd} komórek`);
 
-  if (!calendarTr) return;
+  if (!calendarTrEl) return;
 
+  const calendarTr = $(calendarTrEl);
   const tds = calendarTr.find("td").toArray();
   console.log("\nSzukam biegów śląskich przez indeksy TDs:\n");
 

@@ -5,32 +5,35 @@ export const SLASK_MIASTA = new Set([
   "katowice", "gliwice", "zabrze", "bytom", "rybnik", "tychy",
   "dąbrowa górnicza", "chorzów", "sosnowiec", "jaworzno", "siemianowice śląskie",
   "mysłowice", "piekary śląskie", "świętochłowice", "ruda śląska",
-  "będzin", "czeladź", "wojkowice", "sławków",
+  "będzin", "czeladź", "wojkowice", "sławków", "bieruń",
   // Subregion zachodni
-  "jastrzębie-zdrój", "żory", "wodzisław śląski", "rybnik", "racibórz",
-  "pszów", "radlin", "rybnicki", "czerwionka-leszczyny",
-  // Subregion południowy
+  "jastrzębie-zdrój", "żory", "wodzisław śląski", "racibórz",
+  "pszów", "radlin", "czerwionka-leszczyny",
+  "rydułtowy", "lyski", "jejkowice", "świerklany", "gorzyce", "godów",
+  "pietrowice wielkie", "krzanowice", "nędza", "kuźnia raciborska",
+  // Subregion południowy — bielski
   "bielsko-biała", "cieszyn", "skoczów", "czechowice-dziedzice",
   "pszczyna", "mikołów", "łaziska górne", "orzesze",
+  "brenna", "istebna", "szczyrk", "wisła", "ustroń",
+  "strumień", "pawłowice", "mszana",
+  "bestwina", "kozy", "wilkowice", "porąbka",
+  // Subregion żywiecki (powiat żywiecki należy do woj. śląskiego)
+  "żywiec", "łodygowice", "milówka", "rajcza", "węgierska górka",
+  "jeleśnia", "ujsoły", "koszarawa", "gilowice", "lipowa",
+  "łękawica", "ślemień", "czernichów", "radziechowy-wieprz",
+  "śleszowice", "radziechowy",
   // Subregion centralny
   "tarnowskie góry", "miasteczko śląskie", "kalety", "radzionków",
-  // Subregion północny
-  "częstochowa", "myszków", "zawiercie", "poręba", "blachownia",
-  // Inne miejscowości śląskie
-  "knurów", "lędziny", "imielin", "chełm śląski", "siewierz",
-  "koziegłowy", "herby", "kłobuck", "lubliniec", "pyrzowice",
   "pyskowice", "toszek", "rudziniec", "pilchowice", "ornontowice",
-  "wyry", "bojszowy", "bestwina", "kozy", "wilkowice", "porąbka",
-  "brenna", "istebna", "szczyrk", "wisła", "ustroń",
-  "strumień", "pawłowice", "mszana", "godów", "gorzyce",
-  "pietrowice wielkie", "krzanowice", "nędza", "kuźnia raciborska",
-  "rydułtowy", "lyski", "jejkowice", "świerklany",
-  "suszec", "psary", "bobrowniki", "mierzęcice", "woźniki",
-  "krupski młyn", "ożarowice", "wielowieś", "zbrosławice",
-  "münchenbuchsee", // nie ;)
-  // Okolice / powiaty przyległe często uwzględniane
-  "olkusz", "oświęcim", "chrzanów", "trzebinia", "libiąż",
-  "wadowice", "andrychów", "kęty", "alwernia",
+  "zbrosławice", "wielowieś", "ożarowice", "krupski młyn",
+  // Subregion północny — częstochowski i zawierciański
+  "częstochowa", "myszków", "zawiercie", "poręba", "blachownia",
+  "koziegłowy", "herby", "kłobuck", "lubliniec",
+  "siewierz", "mierzęcice", "psary", "bobrowniki", "woźniki",
+  "rędziny", "poraj", "konopiska", "kamienica polska",
+  // Inne miejscowości śląskie
+  "knurów", "lędziny", "imielin", "chełm śląski",
+  "pyrzowice", "wyry", "bojszowy", "suszec",
 ]);
 
 const SLASK_FRAGMENTY = [

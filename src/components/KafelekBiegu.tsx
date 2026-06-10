@@ -1,73 +1,82 @@
+"use client";
+
 import Link from "next/link";
 import { BiegDTO } from "@/lib/types";
 
-const KOLORY_ZRODLA: Record<string, string> = {
-  maratonypolskie: "bg-blue-100 text-blue-700",
-  dostartu: "bg-green-100 text-green-700",
-  datasport: "bg-purple-100 text-purple-700",
-  personalbest: "bg-pink-100 text-pink-700",
-  formularz: "bg-yellow-100 text-yellow-700",
-  niszowe: "bg-gray-100 text-gray-600",
+const STYL_ZRODLA: Record<string, { badge: string; border: string; label: string }> = {
+  maratonypolskie: { badge: "bg-blue-600 text-white", border: "border-l-blue-500", label: "Maratony Polskie" },
+  dostartu:        { badge: "bg-emerald-600 text-white", border: "border-l-emerald-500", label: "DoStartu" },
+  datasport:       { badge: "bg-violet-600 text-white", border: "border-l-violet-500", label: "DataSport" },
+  personalbest:    { badge: "bg-rose-600 text-white", border: "border-l-rose-500", label: "Personal Best" },
+  formularz:       { badge: "bg-amber-500 text-white", border: "border-l-amber-400", label: "Zgłoszenie" },
+  niszowe:         { badge: "bg-gray-500 text-white", border: "border-l-gray-400", label: "Niszowe" },
 };
 
-const ETYKIETY_ZRODLA: Record<string, string> = {
-  maratonypolskie: "Maratony Polskie",
-  dostartu: "DoStartu",
-  datasport: "DataSport",
-  personalbest: "Personal Best",
-  formularz: "Zgłoszenie",
-  niszowe: "Niszowe",
+const ETYKIETY_TYPU: Record<string, string> = {
+  uliczny: "Uliczny",
+  przełajowy: "Przełajowy",
+  maraton: "Maraton",
+  półmaraton: "Półmaraton",
+  triathlon: "Triathlon",
+  inne: "Inne",
 };
 
 function formatujDate(iso: string) {
-  return new Date(iso).toLocaleDateString("pl-PL", {
-    weekday: "short",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const d = new Date(iso);
+  const dzien = d.toLocaleDateString("pl-PL", { weekday: "short" });
+  const data = d.toLocaleDateString("pl-PL", { day: "numeric", month: "short" });
+  const rok = d.getFullYear();
+  return { dzien, data, rok };
 }
 
 export function KafelekBiegu({ bieg }: { bieg: BiegDTO }) {
-  const kolorZrodla = KOLORY_ZRODLA[bieg.zrodlo] || "bg-gray-100 text-gray-600";
-  const etykietaZrodla = ETYKIETY_ZRODLA[bieg.zrodlo] || bieg.zrodlo;
+  const styl = STYL_ZRODLA[bieg.zrodlo] || STYL_ZRODLA.niszowe;
+  const { dzien, data, rok } = formatujDate(bieg.data);
 
   return (
     <Link href={`/bieg/${bieg.id}`} className="block group">
-      <div className="bg-white border border-gray-200 rounded-xl p-4 h-full hover:shadow-md hover:border-orange-300 transition-all duration-150">
-        <div className="flex items-start justify-between gap-2 mb-3">
-          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${kolorZrodla}`}>
-            {etykietaZrodla}
+      <div className={`bg-white border border-gray-200 border-l-4 ${styl.border} rounded-xl overflow-hidden h-full hover:shadow-lg hover:-translate-y-0.5 transition-all duration-150`}>
+        {/* Górna sekcja — data */}
+        <div className="bg-gray-50 border-b border-gray-200 px-4 py-2 flex items-center justify-between">
+          <div className="text-gray-900">
+            <span className="text-xs text-gray-500 uppercase tracking-wide mr-1">{dzien}</span>
+            <span className="font-bold text-base">{data}</span>
+            <span className="text-gray-400 text-sm ml-1">{rok}</span>
+          </div>
+          <span className="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">
+            {ETYKIETY_TYPU[bieg.typ] || bieg.typ}
           </span>
-          <span className="text-xs text-gray-400 capitalize">{bieg.typ}</span>
         </div>
 
-        <h2 className="font-semibold text-gray-900 group-hover:text-orange-600 leading-snug mb-2 line-clamp-2">
-          {bieg.nazwa}
-        </h2>
+        {/* Środkowa sekcja — nazwa + miasto */}
+        <div className="px-4 py-3">
+          <h2 className="font-semibold text-gray-900 text-sm leading-snug mb-1.5 line-clamp-2 group-hover:text-orange-600 transition-colors">
+            {bieg.nazwa}
+          </h2>
+          <p className="text-sm text-gray-600 flex items-center gap-1">
+            <span className="text-gray-400">📍</span>
+            {bieg.miasto}
+          </p>
 
-        <div className="space-y-1 text-sm text-gray-500">
-          <div className="flex items-center gap-1.5">
-            <span>📅</span>
-            <span>{formatujDate(bieg.data)}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span>📍</span>
-            <span>{bieg.miasto}</span>
-          </div>
           {bieg.dystanse.length > 0 && (
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span>🏅</span>
+            <div className="flex flex-wrap gap-1 mt-2">
               {bieg.dystanse.map((d) => (
                 <span
                   key={d}
-                  className="bg-orange-50 text-orange-700 text-xs px-1.5 py-0.5 rounded"
+                  className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-0.5 rounded-full"
                 >
                   {d}
                 </span>
               ))}
             </div>
           )}
+        </div>
+
+        {/* Dolna sekcja — źródło */}
+        <div className="px-4 pb-3">
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${styl.badge}`}>
+            {styl.label}
+          </span>
         </div>
       </div>
     </Link>

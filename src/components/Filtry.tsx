@@ -28,6 +28,9 @@ function generujMiesiace() {
   return wynik;
 }
 
+const inputKlasa =
+  "border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400";
+
 export function Filtry({ filtry, onChange }: FiltryProps) {
   const ustaw = (pole: keyof FiltryState, wartosc: string) =>
     onChange({ ...filtry, [pole]: wartosc });
@@ -38,33 +41,33 @@ export function Filtry({ filtry, onChange }: FiltryProps) {
   const maFiltry = Object.values(filtry).some((v) => v !== "");
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
       <div className="flex flex-col gap-3">
         <input
           type="text"
-          placeholder="Szukaj po nazwie biegu…"
+          placeholder="🔍  Szukaj po nazwie biegu…"
           value={filtry.szukaj}
           onChange={(e) => ustaw("szukaj", e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className={`w-full ${inputKlasa}`}
         />
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <input
             type="text"
-            placeholder="Miasto"
+            placeholder="Miasto (np. Katowice)"
             value={filtry.miasto}
             onChange={(e) => ustaw("miasto", e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+            className={inputKlasa}
           />
 
           <select
             value={filtry.typ}
             onChange={(e) => ustaw("typ", e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white"
+            className={inputKlasa}
           >
             <option value="">Wszystkie typy</option>
             {TYPY.map((t) => (
-              <option key={t} value={t} className="capitalize">
+              <option key={t} value={t}>
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </option>
             ))}
@@ -73,7 +76,7 @@ export function Filtry({ filtry, onChange }: FiltryProps) {
           <select
             value={filtry.miesiac}
             onChange={(e) => ustaw("miesiac", e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white"
+            className={inputKlasa}
           >
             <option value="">Wszystkie miesiące</option>
             {generujMiesiace().map((m) => (
@@ -82,22 +85,14 @@ export function Filtry({ filtry, onChange }: FiltryProps) {
               </option>
             ))}
           </select>
-
-          <input
-            type="text"
-            placeholder="Dystans (np. 10km)"
-            value={filtry.dystans}
-            onChange={(e) => ustaw("dystans", e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
         </div>
 
         {maFiltry && (
           <button
             onClick={wyczyscFiltry}
-            className="self-start text-sm text-gray-400 hover:text-orange-600 underline"
+            className="self-start text-sm text-orange-600 hover:text-orange-800 font-medium"
           >
-            Wyczyść filtry
+            ✕ Wyczyść filtry
           </button>
         )}
       </div>

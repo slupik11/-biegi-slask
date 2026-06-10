@@ -5,13 +5,13 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { BiegDTO } from "@/lib/types";
 
-const ETYKIETY_ZRODLA: Record<string, string> = {
-  maratonypolskie: "Maratony Polskie",
-  dostartu: "DoStartu",
-  datasport: "DataSport",
-  personalbest: "Personal Best",
-  formularz: "Zgłoszenie użytkownika",
-  niszowe: "Znalezione w internecie",
+const STYL_ZRODLA: Record<string, { badge: string; label: string }> = {
+  maratonypolskie: { badge: "bg-blue-600 text-white",    label: "Maratony Polskie" },
+  dostartu:        { badge: "bg-emerald-600 text-white", label: "DoStartu" },
+  datasport:       { badge: "bg-violet-600 text-white",  label: "DataSport" },
+  personalbest:    { badge: "bg-rose-600 text-white",    label: "Personal Best" },
+  formularz:       { badge: "bg-amber-500 text-white",   label: "Zgłoszenie użytkownika" },
+  niszowe:         { badge: "bg-gray-500 text-white",    label: "Znalezione w internecie" },
 };
 
 function formatujDate(iso: string) {
@@ -41,7 +41,7 @@ export default function PodstronaBiegu() {
   if (blad) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <p className="text-gray-500 mb-4">Nie znaleziono tego biegu.</p>
+        <p className="text-gray-600 mb-4">Nie znaleziono tego biegu.</p>
         <Link href="/" className="text-orange-600 underline">
           Wróć do listy
         </Link>
@@ -51,76 +51,79 @@ export default function PodstronaBiegu() {
 
   if (!bieg) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center text-gray-400">
+      <div className="max-w-2xl mx-auto px-4 py-16 text-center text-gray-500">
         Ładowanie…
       </div>
     );
   }
 
+  const styl = STYL_ZRODLA[bieg.zrodlo] || STYL_ZRODLA.niszowe;
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Link
         href="/"
-        className="text-sm text-gray-400 hover:text-orange-600 mb-6 inline-block"
+        className="text-sm text-gray-500 hover:text-orange-600 mb-6 inline-block"
       >
         ← Wróć do listy
       </Link>
 
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
-        <div className="mb-1 text-xs text-gray-400 uppercase tracking-wide">
-          {ETYKIETY_ZRODLA[bieg.zrodlo] || bieg.zrodlo}
-        </div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">{bieg.nazwa}</h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-          <Pole ikona="📅" etykieta="Data" wartosc={formatujDate(bieg.data)} />
-          <Pole ikona="📍" etykieta="Miasto" wartosc={`${bieg.miasto}, ${bieg.wojewodztwo}`} />
-          <Pole
-            ikona="🏅"
-            etykieta="Dystanse"
-            wartosc={bieg.dystanse.length > 0 ? bieg.dystanse.join(", ") : "—"}
-          />
-          <Pole ikona="🏷️" etykieta="Typ" wartosc={bieg.typ} />
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        {/* Górny pasek */}
+        <div className="bg-gray-50 border-b border-gray-200 px-6 py-3 flex items-center gap-3">
+          <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${styl.badge}`}>
+            {styl.label}
+          </span>
+          <span className="text-xs text-gray-500 capitalize bg-gray-200 px-2 py-0.5 rounded-full">
+            {bieg.typ}
+          </span>
         </div>
 
-        {bieg.opis && (
-          <div className="mb-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-              Opis
-            </h2>
-            <p className="text-gray-700 leading-relaxed">{bieg.opis}</p>
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-5">{bieg.nazwa}</h1>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <Pole ikona="📅" etykieta="Data" wartosc={formatujDate(bieg.data)} />
+            <Pole ikona="📍" etykieta="Miasto" wartosc={`${bieg.miasto}, ${bieg.wojewodztwo}`} />
+            <Pole
+              ikona="🏅"
+              etykieta="Dystanse"
+              wartosc={bieg.dystanse.length > 0 ? bieg.dystanse.join(", ") : "—"}
+            />
+            <Pole ikona="🏷️" etykieta="Typ" wartosc={bieg.typ} />
           </div>
-        )}
 
-        {bieg.linkDoZapisow && (
-          <a
-            href={bieg.linkDoZapisow}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
-          >
-            Zapisz się na bieg →
-          </a>
-        )}
+          {bieg.opis && (
+            <div className="mb-6 bg-gray-50 rounded-lg p-4">
+              <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                Opis
+              </h2>
+              <p className="text-gray-700 leading-relaxed text-sm">{bieg.opis}</p>
+            </div>
+          )}
+
+          {bieg.linkDoZapisow && (
+            <a
+              href={bieg.linkDoZapisow}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+            >
+              Zapisz się na bieg →
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-function Pole({
-  ikona,
-  etykieta,
-  wartosc,
-}: {
-  ikona: string;
-  etykieta: string;
-  wartosc: string;
-}) {
+function Pole({ ikona, etykieta, wartosc }: { ikona: string; etykieta: string; wartosc: string }) {
   return (
     <div className="flex gap-2">
-      <span className="text-lg">{ikona}</span>
+      <span className="text-lg shrink-0">{ikona}</span>
       <div>
-        <div className="text-xs text-gray-400 uppercase tracking-wide">{etykieta}</div>
+        <div className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">{etykieta}</div>
         <div className="text-gray-800 font-medium capitalize">{wartosc}</div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { FetchedEvent } from "@/lib/types";
 import { fetchPersonalBest } from "@/lib/adapters/personalbest";
 import { fetchMaratonyPolskie } from "@/lib/adapters/maratonypolskie";
 import { fetchDoStartu } from "@/lib/adapters/dostartu";
+import { fetchDatasport } from "@/lib/adapters/datasport";
 
 async function zapiszBiegi(biegi: FetchedEvent[], zrodlo: string): Promise<{ nowe: number; pominięte: number }> {
   let nowe = 0;
@@ -58,6 +59,7 @@ export async function fetchAll(): Promise<void> {
     { nazwa: "Personal Best", fn: fetchPersonalBest },
     { nazwa: "Maratony Polskie", fn: fetchMaratonyPolskie },
     { nazwa: "DoStartu", fn: fetchDoStartu },
+    { nazwa: "DataSport", fn: fetchDatasport },
   ];
 
   for (const adapter of adaptery) {

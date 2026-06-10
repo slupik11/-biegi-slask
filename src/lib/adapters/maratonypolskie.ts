@@ -71,20 +71,22 @@ export async function fetchMaratonyPolskie(): Promise<FetchedEvent[]> {
   // Wzorzec grup: [IMG/ikona] [data] [miasto] [<a>nazwa</a>]
   // Szukamy wiersza z największą liczbą TDs.
   let maxTd = 0;
-  let calendarTr: ReturnType<typeof $> | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let calendarTrEl: any = null;
   $("tr").each((_, tr) => {
     const count = $(tr).find("td").length;
     if (count > maxTd) {
       maxTd = count;
-      calendarTr = $(tr);
+      calendarTrEl = tr;
     }
   });
 
-  if (!calendarTr || maxTd < 50) {
+  if (!calendarTrEl || maxTd < 50) {
     console.warn("[MaratonyPolskie] Nie znaleziono wiersza kalendarza");
     return [];
   }
 
+  const calendarTr = $(calendarTrEl);
   const tds = calendarTr.find("td").toArray();
 
   for (let i = 0; i < tds.length; i++) {

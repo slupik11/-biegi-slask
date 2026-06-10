@@ -63,12 +63,12 @@ export default function ZglosBieg() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href="/" className="text-sm text-gray-400 hover:text-orange-600 mb-6 inline-block">
+      <Link href="/" className="text-sm text-gray-500 hover:text-orange-600 mb-6 inline-block">
         ← Wróć do listy
       </Link>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Zgłoś bieg</h1>
-      <p className="text-gray-500 text-sm mb-6">
+      <p className="text-gray-600 text-sm mb-6">
         Znasz bieg, którego nie ma na liście? Zgłoś go, a po weryfikacji pojawi się w kalendarzu.
       </p>
 
@@ -94,7 +94,7 @@ export default function ZglosBieg() {
             type="text"
             value={form.nazwa}
             onChange={(e) => ustaw("nazwa", e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
             placeholder="np. Bieg Wiosenny w Katowicach"
           />
         </div>
@@ -109,7 +109,7 @@ export default function ZglosBieg() {
               type="date"
               value={form.data}
               onChange={(e) => ustaw("data", e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
 
@@ -122,7 +122,7 @@ export default function ZglosBieg() {
               type="text"
               value={form.miasto}
               onChange={(e) => ustaw("miasto", e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
               placeholder="np. Katowice"
             />
           </div>
@@ -138,7 +138,7 @@ export default function ZglosBieg() {
               type="text"
               value={form.dystanse}
               onChange={(e) => ustaw("dystanse", e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
               placeholder="np. 5km, 10km, 21km"
             />
           </div>
@@ -151,7 +151,7 @@ export default function ZglosBieg() {
               required
               value={form.typ}
               onChange={(e) => ustaw("typ", e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
             >
               {TYPY.map((t) => (
                 <option key={t} value={t}>
@@ -170,7 +170,7 @@ export default function ZglosBieg() {
             type="url"
             value={form.linkDoZapisow}
             onChange={(e) => ustaw("linkDoZapisow", e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
             placeholder="https://..."
           />
         </div>
@@ -183,7 +183,7 @@ export default function ZglosBieg() {
             rows={3}
             value={form.opis}
             onChange={(e) => ustaw("opis", e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
             placeholder="Krótki opis biegu…"
           />
         </div>
@@ -196,7 +196,7 @@ export default function ZglosBieg() {
             type="email"
             value={form.emailKontakt}
             onChange={(e) => ustaw("emailKontakt", e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
             placeholder="twoj@email.pl"
           />
         </div>
