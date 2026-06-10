@@ -25,6 +25,7 @@ export default function PanelAdmina() {
   const [biegi, setBiegi] = useState<BiegDTO[]>([]);
   const [ladowanie, setLadowanie] = useState(true);
   const [pobieranie, setPobieranie] = useState(false);
+  const [zatwierdzanieWszystkich, setZatwierdzanieWszystkich] = useState(false);
   const [przetwarzane, setPrzetwarzane] = useState<number[]>([]);
 
   async function pobierzBiegi() {
@@ -43,6 +44,15 @@ export default function PanelAdmina() {
     setPobieranie(true);
     await fetch("/api/admin/fetch", { method: "POST" });
     setPobieranie(false);
+    pobierzBiegi();
+  }
+
+  async function zatwierdzWszystkie() {
+    setZatwierdzanieWszystkich(true);
+    const res = await fetch("/api/admin/zatwierdz-wszystkie", { method: "POST" });
+    const dane = await res.json();
+    setZatwierdzanieWszystkich(false);
+    alert(`Opublikowano ${dane.opublikowano} biegów`);
     pobierzBiegi();
   }
 
@@ -66,7 +76,16 @@ export default function PanelAdmina() {
             <StatZrodel tryb="oczekujace" />
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          {biegi.length > 0 && (
+            <button
+              onClick={zatwierdzWszystkie}
+              disabled={zatwierdzanieWszystkich}
+              className="text-sm font-semibold bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white rounded-lg px-4 py-2 transition-colors"
+            >
+              {zatwierdzanieWszystkich ? "Zatwierdzanie…" : `✓ Zatwierdź wszystkie (${biegi.length})`}
+            </button>
+          )}
           <button
             onClick={fetchBiegi}
             disabled={pobieranie}
