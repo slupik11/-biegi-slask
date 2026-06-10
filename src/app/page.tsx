@@ -11,9 +11,9 @@ import { StatZrodel } from "@/components/StatZrodel";
 
 type Widok = "lista" | "kalendarz";
 
-// Zdjęcia z Unsplash — biegacze (wolna licencja Unsplash)
+// Zdjęcie z Unsplash — tłum biegaczy podczas wyścigu ulicznego (wolna licencja)
 const HERO_IMG =
-  "https://images.unsplash.com/photo-1509869175650-a1d97972541a?w=1400&q=80&fit=crop";
+  "https://images.unsplash.com/photo-1664304828088-2879e58abf10?w=1400&q=85&fit=crop";
 
 export default function StronaGlowna() {
   const [biegi, setBiegi] = useState<BiegDTO[]>([]);
@@ -52,48 +52,54 @@ export default function StronaGlowna() {
     <div>
       {/* ===== HERO ===== */}
       {!maFiltry && (
-        <div className="relative overflow-hidden bg-gray-900" style={{ minHeight: 300 }}>
-          {/* Zdjęcie w tle */}
+        <div className="relative overflow-hidden bg-gray-900" style={{ minHeight: 340 }}>
+          {/* Zdjęcie biegaczy w tle */}
           <Image
             src={HERO_IMG}
-            alt="Biegacze na starcie"
+            alt="Biegacze podczas wyścigu ulicznego"
             fill
             priority
-            className="object-cover object-center opacity-40"
+            className="object-cover object-center opacity-45"
             sizes="100vw"
           />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 via-gray-900/50 to-transparent" />
+          {/* Gradient — mocniejszy po lewej żeby tekst był czytelny */}
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-gray-900/65 to-gray-900/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 via-transparent to-transparent" />
 
           {/* Treść hero */}
-          <div className="relative max-w-5xl mx-auto px-4 py-14 flex flex-col gap-4">
-            <div className="inline-flex items-center gap-2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full w-fit">
-              🏃 Województwo Śląskie
+          <div className="relative max-w-5xl mx-auto px-4 py-12 sm:py-16 flex flex-col sm:flex-row sm:items-center gap-8 sm:gap-16">
+            {/* Lewa kolumna — tytuł i CTA */}
+            <div className="flex flex-col gap-4 flex-1">
+              <div className="inline-flex items-center gap-2 bg-orange-500/90 text-white text-xs font-bold px-3 py-1 rounded-full w-fit tracking-wide">
+                🏃 Województwo Śląskie
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
+                Wszystkie biegi<br />
+                <span className="text-orange-400">na Śląsku</span>
+              </h1>
+              <p className="text-gray-300 text-sm max-w-sm leading-relaxed">
+                Automatyczny kalendarz biegów — zbieramy zawody z 4 platform
+                w jedno miejsce.
+              </p>
+              <div className="flex gap-3 mt-1">
+                <Link
+                  href="/zglos-bieg"
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
+                >
+                  + Zgłoś bieg
+                </Link>
+                <Link
+                  href="/jak-to-dziala"
+                  className="bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm border border-white/20"
+                >
+                  Jak to działa?
+                </Link>
+              </div>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight max-w-xl">
-              Wszystkie biegi<br />
-              <span className="text-orange-400">na Śląsku</span>
-            </h1>
-            <p className="text-gray-300 text-base max-w-md">
-              Automatyczny kalendarz zbierający zawody z DoStartu, Maratony Polskie,
-              Personal Best i DataSport w jednym miejscu.
-            </p>
-            <div className="mt-2">
-              <StatZrodel tryb="opublikowane" />
-            </div>
-            <div className="flex gap-3 mt-2">
-              <Link
-                href="/zglos-bieg"
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
-              >
-                + Zgłoś bieg
-              </Link>
-              <Link
-                href="/jak-to-dziala"
-                className="bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm border border-white/20"
-              >
-                Jak to działa?
-              </Link>
+
+            {/* Prawa kolumna — wielki licznik */}
+            <div className="sm:text-right">
+              <StatZrodel tryb="opublikowane" wariant="hero" />
             </div>
           </div>
         </div>
