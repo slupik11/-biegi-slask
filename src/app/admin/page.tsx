@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { BiegDTO } from "@/lib/types";
 import { StatZrodel } from "@/components/StatZrodel";
 
@@ -15,13 +16,12 @@ const STYL_ZRODLA: Record<string, { badge: string; label: string }> = {
 
 function formatujDate(iso: string) {
   return new Date(iso).toLocaleDateString("pl-PL", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
+    day: "numeric", month: "long", year: "numeric",
   });
 }
 
 export default function PanelAdmina() {
+  const router = useRouter();
   const [biegi, setBiegi] = useState<BiegDTO[]>([]);
   const [ladowanie, setLadowanie] = useState(true);
   const [pobieranie, setPobieranie] = useState(false);
@@ -36,9 +36,7 @@ export default function PanelAdmina() {
     setLadowanie(false);
   }
 
-  useEffect(() => {
-    pobierzBiegi();
-  }, []);
+  useEffect(() => { pobierzBiegi(); }, []);
 
   async function fetchBiegi() {
     setPobieranie(true);
@@ -65,6 +63,11 @@ export default function PanelAdmina() {
     });
     setBiegi((prev) => prev.filter((b) => b.id !== id));
     setPrzetwarzane((p) => p.filter((x) => x !== id));
+  }
+
+  async function wyloguj() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.push("/admin/login");
   }
 
   return (
@@ -98,6 +101,12 @@ export default function PanelAdmina() {
             className="text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg px-3 py-2 transition-colors"
           >
             Odśwież
+          </button>
+          <button
+            onClick={wyloguj}
+            className="text-sm text-gray-400 hover:text-red-600 border border-gray-200 rounded-lg px-3 py-2 transition-colors"
+          >
+            Wyloguj
           </button>
         </div>
       </div>
@@ -146,7 +155,6 @@ export default function PanelAdmina() {
                     </a>
                   )}
                 </div>
-
                 <div className="flex gap-2 shrink-0">
                   <button
                     disabled={czy}
