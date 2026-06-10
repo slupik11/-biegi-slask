@@ -11,10 +11,26 @@ import { HeroBaner } from "@/components/HeroBaner";
 
 type Widok = "lista" | "kalendarz";
 
+const FRAZY_HERO = [
+  "na Śląsku",
+  "w jednym miejscu",
+  "pod ręką",
+  "z 4 platform",
+];
+
 export default function StronaGlowna() {
   const [biegi, setBiegi] = useState<BiegDTO[]>([]);
   const [ladowanie, setLadowanie] = useState(true);
   const [widok, setWidok] = useState<Widok>("lista");
+  const [frazaIndeks, setFrazaIndeks] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setFrazaIndeks((i) => (i + 1) % FRAZY_HERO.length);
+    }, 3000);
+    return () => clearInterval(t);
+  }, []);
+
   const [filtry, setFiltry] = useState({
     miasto: "",
     typ: "",
@@ -54,13 +70,27 @@ export default function StronaGlowna() {
           {/* Treść hero */}
           <div className="relative max-w-5xl mx-auto px-4 py-12 sm:py-16 flex flex-col sm:flex-row sm:items-center gap-8 sm:gap-16">
             {/* Lewa kolumna — tytuł i CTA */}
-            <div className="flex flex-col gap-4 flex-1">
-              <div className="inline-flex items-center gap-2 bg-orange-500/90 text-white text-xs font-bold px-3 py-1 rounded-full w-fit tracking-wide">
-                🏃 Województwo Śląskie
-              </div>
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-                Wszystkie biegi<br />
-                <span className="text-orange-400">na Śląsku</span>
+            <div className="flex flex-col gap-4 flex-1 min-w-0">
+              <p
+                className="text-sm font-black italic uppercase tracking-widest text-orange-300"
+                style={{ textShadow: "0 1px 10px rgba(0,0,0,0.7)" }}
+              >
+                Województwo Śląskie
+              </p>
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight overflow-hidden">
+                Wszystkie biegi
+                <span
+                  className="block overflow-hidden"
+                  style={{ height: "1.25em" }}
+                >
+                  <span
+                    key={frazaIndeks}
+                    className="text-orange-400 block whitespace-nowrap"
+                    style={{ animation: "heroTextIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards" }}
+                  >
+                    {FRAZY_HERO[frazaIndeks]}
+                  </span>
+                </span>
               </h1>
               <p className="text-gray-300 text-sm max-w-sm leading-relaxed">
                 Automatyczny kalendarz biegów — zbieramy zawody z 4 platform
@@ -97,6 +127,16 @@ export default function StronaGlowna() {
             <h2 className="text-xl font-bold text-gray-900">
               Nadchodzące biegi
             </h2>
+            <p className="text-xs text-gray-500 mt-1">
+              Spróbuj{" "}
+              <button
+                onClick={() => setWidok("kalendarz")}
+                className="text-orange-600 font-semibold hover:underline"
+              >
+                widoku kalendarza
+              </button>
+              {" "}— kliknij w dzień i od razu widzisz biegi.
+            </p>
             {maFiltry && (
               <div className="mt-1">
                 <StatZrodel tryb="opublikowane" />
