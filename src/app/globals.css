@@ -6,11 +6,12 @@
 */
 html {
   color-scheme: light;
-  background-color: #f9fafb;
+  background-color: #ffffff;
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #f9fafb;
+  background-color: #ffffff;
   color: #111827;
 }
 

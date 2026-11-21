@@ -20,8 +20,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-gray-50 text-gray-900">
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+      <body className="min-h-full flex flex-col bg-white text-gray-900">
+        <header className="bg-white/90 backdrop-blur border-b border-gray-200 sticky top-0 z-30">
           <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
             <Link href="/" className="flex items-center group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -45,7 +45,7 @@ export default function RootLayout({
           </div>
         </header>
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-gray-200 bg-white mt-8 py-6 text-center text-sm text-gray-400">
+        <footer className="border-t border-gray-200 bg-white py-6 text-center text-sm text-gray-400">
           Biegi Śląsk © {new Date().getFullYear()} · Dane zbierane automatycznie z publicznych źródeł
         </footer>
       </body>

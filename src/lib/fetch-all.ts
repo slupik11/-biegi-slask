@@ -5,18 +5,24 @@ import { fetchMaratonyPolskie } from "@/lib/adapters/maratonypolskie";
 import { fetchDoStartu } from "@/lib/adapters/dostartu";
 import { fetchDatasport } from "@/lib/adapters/datasport";
 
-async function zapiszBiegi(biegi: FetchedEvent[], zrodlo: string): Promise<{ nowe: number; pominięte: number }> {
-  let nowe = 0;
-  let pominięte = 0;
+export interface WynikAdaptera {
+  zrodlo: string;
+  znalezione: number;
+  zapisane: number;
+  bledy: number;
+  blad?: string;
+}
+
+async function zapiszBiegi(biegi: FetchedEvent[]): Promise<{ zapisane: number; bledy: number; ostatniBlad?: string }> {
+  let zapisane = 0;
+  let bledy = 0;
+  let ostatniBlad: string | undefined;
 
   for (const bieg of biegi) {
     try {
       await prisma.bieg.upsert({
         where: {
-          zewnetrznyId_zrodlo: {
-            zewnetrznyId: bieg.zewnetrznyId,
-            zrodlo: bieg.zrodlo,
-          },
+          zewnetrznyId_zrodlo: { zewnetrznyId: bieg.zewnetrznyId, zrodlo: bieg.zrodlo },
         },
         update: {
           nazwa: bieg.nazwa,
@@ -26,7 +32,6 @@ async function zapiszBiegi(biegi: FetchedEvent[], zrodlo: string): Promise<{ now
           typ: bieg.typ,
           linkDoZapisow: bieg.linkDoZapisow || null,
           opis: bieg.opis || null,
-          dataAktualizacji: new Date(),
         },
         create: {
           nazwa: bieg.nazwa,
@@ -42,19 +47,20 @@ async function zapiszBiegi(biegi: FetchedEvent[], zrodlo: string): Promise<{ now
           status: "do_akceptacji",
         },
       });
-      nowe++;
+      zapisane++;
     } catch (e) {
-      console.error(`[${zrodlo}] Błąd zapisu "${bieg.nazwa}":`, e);
-      pominięte++;
+      bledy++;
+      ostatniBlad = e instanceof Error ? e.message.split("\n").filter(Boolean).pop() : String(e);
+      // Baza nie odpowiada — nie ma sensu próbować reszty
+      if (bledy >= 3 && zapisane === 0) break;
     }
   }
 
-  return { nowe, pominięte };
+  return { zapisane, bledy, ostatniBlad };
 }
 
-export async function fetchAll(): Promise<void> {
-  console.log("=== Pobieranie biegów śląskich ===\n");
-
+/** Pobiera biegi ze wszystkich źródeł i zwraca podsumowanie (zamiast udawać sukces). */
+export async function fetchAll(): Promise<WynikAdaptera[]> {
   const adaptery: Array<{ nazwa: string; fn: () => Promise<FetchedEvent[]> }> = [
     { nazwa: "Personal Best", fn: fetchPersonalBest },
     { nazwa: "Maratony Polskie", fn: fetchMaratonyPolskie },
@@ -62,21 +68,19 @@ export async function fetchAll(): Promise<void> {
     { nazwa: "DataSport", fn: fetchDatasport },
   ];
 
-  for (const adapter of adaptery) {
-    console.log(`▶ ${adapter.nazwa}...`);
-    try {
-      const biegi = await adapter.fn();
-      console.log(`  Znaleziono: ${biegi.length} biegów śląskich`);
-
-      if (biegi.length > 0) {
-        const { nowe, pominięte } = await zapiszBiegi(biegi, adapter.nazwa);
-        console.log(`  Zapisano: ${nowe} | Pominięto: ${pominięte}`);
+  // Wszystkie źródła pobieramy równolegle — szybciej i mieścimy się w limicie czasu Vercela
+  return Promise.all(
+    adaptery.map(async ({ nazwa, fn }): Promise<WynikAdaptera> => {
+      try {
+        const biegi = await fn();
+        const { zapisane, bledy, ostatniBlad } = await zapiszBiegi(biegi);
+        console.log(`[${nazwa}] znaleziono ${biegi.length}, zapisano ${zapisane}, błędy ${bledy}`);
+        return { zrodlo: nazwa, znalezione: biegi.length, zapisane, bledy, blad: ostatniBlad };
+      } catch (e) {
+        const blad = e instanceof Error ? e.message : String(e);
+        console.error(`[${nazwa}] błąd adaptera:`, blad);
+        return { zrodlo: nazwa, znalezione: 0, zapisane: 0, bledy: 1, blad };
       }
-    } catch (e) {
-      console.error(`  ❌ Błąd adaptera ${adapter.nazwa}:`, e);
-    }
-    console.log();
-  }
-
-  console.log("=== Gotowe ===");
+    })
+  );
 }

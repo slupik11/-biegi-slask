@@ -84,7 +84,7 @@ export function KalendarzBiegow({ biegi }: { biegi: BiegDTO[] }) {
         );
 
         return (
-          <div key={`${rok}-${miesiac}`} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div key={`${rok}-${miesiac}`} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
 
             {/* Nagłówek */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">

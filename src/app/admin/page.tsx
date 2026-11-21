@@ -28,11 +28,18 @@ export default function PanelAdmina() {
   const [zatwierdzanieWszystkich, setZatwierdzanieWszystkich] = useState(false);
   const [przetwarzane, setPrzetwarzane] = useState<number[]>([]);
 
+  const [komunikat, setKomunikat] = useState<{ ok: boolean; tekst: string } | null>(null);
+
   async function pobierzBiegi() {
     setLadowanie(true);
-    const res = await fetch("/api/admin/biegi");
-    const dane = await res.json();
-    setBiegi(dane);
+    try {
+      const res = await fetch("/api/admin/biegi");
+      if (!res.ok) throw new Error();
+      setBiegi(await res.json());
+    } catch {
+      setBiegi([]);
+      setKomunikat({ ok: false, tekst: "Baza danych nie odpowiada. Sprawdź, czy projekt w Supabase jest aktywny." });
+    }
     setLadowanie(false);
   }
 
@@ -40,7 +47,21 @@ export default function PanelAdmina() {
 
   async function fetchBiegi() {
     setPobieranie(true);
-    await fetch("/api/admin/fetch", { method: "POST" });
+    setKomunikat(null);
+    try {
+      const res = await fetch("/api/admin/fetch", { method: "POST" });
+      const d = await res.json();
+      const szczegoly = (d.wyniki ?? [])
+        .map((w: { zrodlo: string; zapisane: number; znalezione: number }) => `${w.zrodlo}: ${w.zapisane}/${w.znalezione}`)
+        .join(" · ");
+      setKomunikat(
+        d.sukces
+          ? { ok: true, tekst: `Pobrano ${d.zapisane} biegów. ${szczegoly}` }
+          : { ok: false, tekst: `Biegi znalezione (${d.znalezione}), ale nie udało się zapisać — baza nie odpowiada.` }
+      );
+    } catch {
+      setKomunikat({ ok: false, tekst: "Pobieranie przerwane — spróbuj ponownie." });
+    }
     setPobieranie(false);
     pobierzBiegi();
   }
@@ -110,6 +131,15 @@ export default function PanelAdmina() {
           </button>
         </div>
       </div>
+
+      {pobieranie && (
+        <p className="mb-4 text-sm text-gray-500">Pobieram biegi z 4 serwisów — to trwa około minuty…</p>
+      )}
+      {komunikat && (
+        <p className={`mb-4 text-sm px-4 py-3 rounded-lg ${komunikat.ok ? "bg-green-50 text-green-800" : "bg-red-50 text-red-700"}`}>
+          {komunikat.tekst}
+        </p>
+      )}
 
       {ladowanie ? (
         <div className="text-center py-16 text-gray-500">Ładowanie…</div>

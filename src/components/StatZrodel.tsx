@@ -60,6 +60,7 @@ export function StatZrodel({ tryb, wariant = "compact" }: Props) {
   const animowanaSuma = useCountUp(suma);
 
   if (wariant === "hero") {
+    if (suma === 0) return null;
     return (
       <div className="flex flex-col gap-3">
         {/* Duży licznik */}
